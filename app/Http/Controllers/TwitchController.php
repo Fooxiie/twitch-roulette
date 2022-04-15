@@ -45,6 +45,13 @@ class TwitchController extends Controller
     }
 
     public function profil() {
-        return view('auth.twitch.connected');
+        return view('auth.twitch.profil');
+    }
+
+    public function save(Request $request) {
+        $code = $request->input('wizebotkey');
+        Auth::user()->wizebot_key = $code;
+        Auth::user()->save();
+        return redirect(route('auth.twitch.profil'));
     }
 }
