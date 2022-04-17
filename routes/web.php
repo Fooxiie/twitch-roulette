@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GameController;
 use App\Http\Controllers\TwitchController;
 use Illuminate\Support\Facades\Route;
 
@@ -27,5 +28,10 @@ Route::get('/auth/twitch/callback',     [TwitchController::class, 'callback'])->
 Route::get('/connected',                [TwitchController::class, 'connected'])->middleware(['auth'])->name('auth.twitch.connected');
 Route::get('/profil',                   [TwitchController::class, 'profil'])->middleware(['auth'])->name('auth.twitch.profil');
 Route::get('/profil/save',              [TwitchController::class,'save'])->middleware(['auth'])->name('auth.twitch.profil.save');
+
+Route::get('/test',       [GameController::class, 'test'])->middleware(['auth'])->name('test');
+Route::get('/game/test/saveform',       [GameController::class, 'form_result_addbet'])->middleware(['auth'])->name('form.test');
+Route::get('/test/spinRoulette',        [GameController::class, 'spinRoulette'])->middleware(['auth'])->name('test.spin');
+Route::get('/test/verifbet',            [GameController::class, 'verif_bet_for_game'])->middleware(['auth'])->name('test.verifbet');
 
 require __DIR__.'/auth.php';
