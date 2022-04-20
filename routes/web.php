@@ -29,7 +29,8 @@ Route::get('/connected',                [TwitchController::class, 'connected'])-
 Route::get('/profil',                   [TwitchController::class, 'profil'])->middleware(['auth'])->name('auth.twitch.profil');
 Route::get('/profil/save',              [TwitchController::class,'save'])->middleware(['auth'])->name('auth.twitch.profil.save');
 
-Route::get('/test',       [GameController::class, 'test'])->middleware(['auth'])->name('test');
+Route::get('/test',                     [GameController::class, 'test'])->middleware(['auth'])->name('test');
+Route::get('/test/table',               [GameController::class, 'table'])->middleware(['auth'])->name('table');
 Route::get('/game/test/saveform',       [GameController::class, 'form_result_addbet'])->middleware(['auth'])->name('form.test');
 Route::get('/test/spinRoulette',        [GameController::class, 'spinRoulette'])->middleware(['auth'])->name('test.spin');
 Route::get('/test/verifbet',            [GameController::class, 'verif_bet_for_game'])->middleware(['auth'])->name('test.verifbet');

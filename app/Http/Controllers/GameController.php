@@ -16,6 +16,10 @@ class GameController extends Controller
         return view('test');
     }
 
+    public function table() {
+        return view('table.table');
+    }
+
     public function form_result_addbet(Request $request)
     {
         if ($this->addBet(1, $request->input('pseudo'), $request->input('amount'), $request->input('chiffre'))) {
