@@ -13,6 +13,21 @@
         <!-- Styles -->
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+        />
+
+        <style>
+            .modal {
+                transition: opacity 0.25s ease;
+            }
+            body.modal-active {
+                overflow-x: hidden;
+                overflow-y: visible !important;
+            }
+        </style>
+
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}" defer></script>
     </head>

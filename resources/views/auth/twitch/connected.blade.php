@@ -37,7 +37,7 @@
         @endif
     </div>
     <div class="w-48 mx-auto py-4">
-        <a href=""
+        <a href="{{route('table')}}"
            class="bg-red-800 text-white rounded-full px-2 py-4 mx-auto text-center w-8 hover:bg-red-700 border border-gray-400">Se
             rendre à la roulette !</a>
     </div>
