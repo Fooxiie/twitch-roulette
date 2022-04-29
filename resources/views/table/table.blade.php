@@ -99,23 +99,23 @@
                                      points="19155,6157 19155,7553 20248,7553 20248,6157 "/>
                             <polygon class="rouge" onclick="chooseTile(this)" id="18"
                                      points="19155,4628 20248,4628 20248,3224 19155,3224 "/>
-                            <polygon class="rouge" onclick="chooseTile(this)" id="19"
-                                     points="20335,3224 20335,4628 21428,4628 21428,3224 "/>
                             <polygon class="rouge" onclick="chooseTile(this)" id="21"
+                                     points="20335,3224 20335,4628 21428,4628 21428,3224 "/>
+                            <polygon class="rouge" onclick="chooseTile(this)" id="19"
                                      points="21428,6157 20335,6157 20335,7553 21428,7553 "/>
                             <polygon class="rouge" onclick="chooseTile(this)" id="23"
                                      points="21514,4715 21514,6070 22607,6070 22607,4715 "/>
-                            <polygon class="rouge" onclick="chooseTile(this)" id="25"
-                                     points="22694,3224 22694,4628 23787,4628 23787,3224 "/>
                             <polygon class="rouge" onclick="chooseTile(this)" id="27"
-                                     points="23873,3224 23873,4628 24966,4628 24966,3224 "/>
+                                     points="22694,3224 22694,4628 23787,4628 23787,3224 "/>
                             <polygon class="rouge" onclick="chooseTile(this)" id="30"
+                                     points="23873,3224 23873,4628 24966,4628 24966,3224 "/>
+                            <polygon class="rouge" onclick="chooseTile(this)" id="36"
                                      points="26232,3224 26232,4628 27325,4628 27325,3224 "/>
                             <polygon class="rouge" onclick="chooseTile(this)" id="32"
                                      points="26146,4715 25053,4715 25053,6070 26146,6070 "/>
                             <polygon class="rouge" onclick="chooseTile(this)" id="34"
                                      points="27325,6157 26232,6157 26232,7553 27325,7553 "/>
-                            <polygon class="rouge" onclick="chooseTile(this)" id="36"
+                            <polygon class="rouge" onclick="chooseTile(this)" id="25"
                                      points="23787,7553 23787,6157 22694,6157 22694,7553 "/>
                         </g>
                         <g>
@@ -139,19 +139,19 @@
                                      points="19155,4715 19155,6070 20248,6070 20248,4715 "/>
                             <polygon class="noir" onclick="chooseTile(this)" id="20"
                                      points="20335,4715 20335,6070 21428,6070 21428,4715 "/>
-                            <polygon class="noir" onclick="chooseTile(this)" id="22"
-                                     points="21514,3224 21514,4628 22607,4628 22607,3224 "/>
                             <polygon class="noir" onclick="chooseTile(this)" id="24"
+                                     points="21514,3224 21514,4628 22607,4628 22607,3224 "/>
+                            <polygon class="noir" onclick="chooseTile(this)" id="22"
                                      points="22607,6157 21514,6157 21514,7553 22607,7553 "/>
                             <polygon class="noir" onclick="chooseTile(this)" id="26"
                                      points="22694,4715 22694,6070 23787,6070 23787,4715 "/>
                             <polygon class="noir" onclick="chooseTile(this)" id="28"
                                      points="23873,4715 23873,6070 24966,6070 24966,4715 "/>
-                            <polygon class="noir" onclick="chooseTile(this)" id="29"
-                                     points="25053,3224 25053,4628 26146,4628 26146,3224 "/>
-                            <polygon class="noir" onclick="chooseTile(this)" id="31"
-                                     points="24966,6157 23873,6157 23873,7553 24966,7553 "/>
                             <polygon class="noir" onclick="chooseTile(this)" id="33"
+                                     points="25053,3224 25053,4628 26146,4628 26146,3224 "/>
+                            <polygon class="noir" onclick="chooseTile(this)" id="28"
+                                     points="24966,6157 23873,6157 23873,7553 24966,7553 "/>
+                            <polygon class="noir" onclick="chooseTile(this)" id="31"
                                      points="25053,6157 25053,7553 26146,7553 26146,6157 "/>
                             <polygon class="noir" onclick="chooseTile(this)" id="35"
                                      points="26232,6070 27325,6070 27325,4715 26232,4715 "/>
