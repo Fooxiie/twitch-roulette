@@ -28,6 +28,7 @@ Route::get('/auth/twitch/callback',     [TwitchController::class, 'callback'])->
 Route::get('/connected',                [TwitchController::class, 'connected'])->middleware(['auth'])->name('auth.twitch.connected');
 Route::get('/profil',                   [TwitchController::class, 'profil'])->middleware(['auth'])->name('auth.twitch.profil');
 Route::get('/profil/save',              [TwitchController::class,'save'])->middleware(['auth'])->name('auth.twitch.profil.save');
+Route::get('/getjeton',                 [TwitchController::class, 'getJeton'])->middleware(['auth'])->name('auth.wizebot.jeton');
 
 Route::get('/test',                     [GameController::class, 'test'])->middleware(['auth'])->name('test');
 Route::get('/test/table',               [GameController::class, 'table'])->middleware(['auth'])->name('table');

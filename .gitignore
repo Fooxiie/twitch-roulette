@@ -5,6 +5,7 @@
 /vendor
 .env
 .env.backup
+.env.laragon
 .phpunit.result.cache
 Homestead.json
 Homestead.yaml
@@ -15,6 +16,8 @@ yarn-error.log
 
 /vendor/
 node_modules/
+
+public
 
 # Laravel 4 specific
 bootstrap/compiled.php

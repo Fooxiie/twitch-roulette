@@ -32,7 +32,7 @@ class GameController extends Controller
     public function spinRoulette(Request $request)
     {
         $game = Game::query()->find($request->query('game_id'))->get()[0];
-        $num = rand(0, 37);
+        $num = rand(0, 0);
         $game->number = $num;
         $game->save();
         return $num;
@@ -74,8 +74,8 @@ class GameController extends Controller
     public function report_bet(Bet $bet)
     {
         $url = (($bet->winned) ?
-            'https://wapi.wizebot.tv/api/currency/' . Auth::user()->wizebot_key . '/action/add/' . $bet->viewer . '/' . $bet->amount
-            : 'https://wapi.wizebot.tv/api/currency/' . Auth::user()->wizebot_key . '/action/remove/' . $bet->viewer . '/' . $bet->amount . '/0');
+            'https://wapi.wizebot.tv/api/currency/' . 'c6b3aa51b4233e4ba07e3b5e4b768f05' . '/action/add/' . $bet->viewer . '/' . $bet->amount
+            : 'https://wapi.wizebot.tv/api/currency/' . 'c6b3aa51b4233e4ba07e3b5e4b768f05' . '/action/remove/' . $bet->viewer . '/' . $bet->amount . '/0');
         $response = Http::post($url);
         if ($response->status() != 200) {
             dd($response, $url);

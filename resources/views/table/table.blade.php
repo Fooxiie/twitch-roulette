@@ -317,11 +317,13 @@
 
                 <!--Body-->
                 <label for="mise">Paris sur le <span id="display-amount"></span></label><br/>
-                <input id="mise" type="number" class="bg-gray-300 text-black" value="1"/>
+                <input id="mise" type="number" class="bg-gray-300 text-black" value="1"/><br/>
+                <label><span id="display-jeton"></span> jetons disponible</label>
 
                 <!--Footer-->
                 <div class="flex justify-end pt-2">
-                    <button class="modal-close px-4 bg-indigo-500 p-3 rounded-lg text-white hover:bg-indigo-400">Close
+                    <button id="btn_validate"
+                            class="modal-close px-4 bg-red-800 p-3 rounded-lg text-white hover:bg-red-600">Ajouter
                     </button>
                 </div>
 
@@ -329,11 +331,27 @@
         </div>
     </div>
 
+    <div class="fixed bg-gray-800 right-10 bottom-10">Valider</div>
+
     <script>
-        let bet = [];
+        let bet = {};
+        let playerJeton = 0;
+        let actualbet = null;
+        let validate = false;
+
+        window.addEventListener("load", function (event) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    playerJeton = this.responseText;
+                    console.log(playerJeton);
+                }
+            }
+            xhttp.open("GET", '{{route('auth.wizebot.jeton')}}', true);
+            xhttp.send();
+        })
 
         function chooseTile(elmt) {
-            console.log('mise sur : ' + elmt.id + ' avec ' + getMyMise() + " jetons")
             // gestion des text-id
             if (elmt.id.toString().startsWith('text')) {
                 elmt.id = elmt.id.toString().split('-')[1]
@@ -348,23 +366,22 @@
         }
 
         function manageJetons(elmt) {
-            if (bet.indexOf(elmt.id) === -1) {
-                bet.push(elmt.id)
-                placeJetons(elmt);
+            if (bet[elmt.id] === undefined) {
                 PopUpAmount(elmt)
+                actualbet = elmt;
             } else {
                 if (confirm('Êtes-vous sûr(e) de supprimer le jeton ?')) {
                     var jeton = document.getElementById('bet' + elmt.id)
                     jeton.parentNode.removeChild(jeton);
-                    bet.splice(bet.indexOf(elmt.id), 1);
+                    delete bet[elmt.id];
                 }
             }
         }
 
         function placeJetons(elmt) {
-            bound = elmt.getBBox();
-            newX = (bound.x + bound.width / 2);
-            newY = (bound.y + bound.height / 2 - 400);
+            let bound = elmt.getBBox();
+            let newX = (bound.x + bound.width / 2);
+            let newY = (bound.y + bound.height / 2 - 400);
 
             var jeton = document.createElementNS('http://www.w3.org/2000/svg', 'g');
             jeton.innerHTML = '<path class="fil5" d="M0 0c213,0 387,173 387,387 0,213 -174,386 -387,386 -214,0 -387,-173 -387,-386 0,-214 173,-387 387,-387z"></path>' +
@@ -381,9 +398,13 @@
         const overlay = document.querySelector('.modal-overlay')
         overlay.addEventListener('click', toggleModal)
 
-        var closemodal = document.querySelectorAll('.modal-close')
-        for (var i = 0; i < closemodal.length; i++) {
-            closemodal[i].addEventListener('click', toggleModal)
+        let closemodal = document.querySelectorAll('.modal-close')
+        for (let i = 0; i < closemodal.length; i++) {
+            if (closemodal[i].id === 'btn_validate') {
+                closemodal[i].addEventListener('click', toggleModal_Validate)
+            } else {
+                closemodal[i].addEventListener('click', toggleModal)
+            }
         }
 
         document.onkeydown = function (evt) {
@@ -399,6 +420,11 @@
             }
         };
 
+        function toggleModal_Validate(elmt) {
+            validate = true;
+            toggleModal(elmt)
+        }
+
         function toggleModal(elmt) {
             const body = document.querySelector('body')
             const modal = document.querySelector('.modal')
@@ -409,7 +435,23 @@
             const title = document.querySelector('#display-amount')
             title.innerHTML = elmt.id
 
-            console.log(elmt)
+            const jeton = document.querySelector('#display-jeton')
+            jeton.innerHTML = playerJeton
+
+            if (validate) {
+                var miseWanted = document.querySelector('#mise').value;
+                if (playerJeton - miseWanted >= 0) {
+                    bet[actualbet.id] = miseWanted
+                    placeJetons(actualbet);
+                    actualbet = null;
+                    playerJeton -= miseWanted;
+                    document.querySelector('#mise').value = 1;
+                } else {
+
+                }
+            }
+
+            validate = false;
         }
 
     </script>
