@@ -11,6 +11,26 @@ use Illuminate\Support\Facades\Http;
 class GameController extends Controller
 {
 
+    public function submit(Request $request) {
+        $game = new Game();
+        $game->user_id = Auth::user()->id;
+        $game->name = $request->input('room_name');
+        $game->number_place = $request->input('room_places');
+        $game->save();
+        return redirect(route('room.play', ['idRoom' => $game->id]));
+    }
+
+    public function play(Request $request) {
+        $idRoom = $request->query('idRoom');
+        $game = Game::query()->find($idRoom)->get()->first();
+        if (Auth::user()->id == $game->user_id) {
+            return view('table.table');
+        } else {
+            $twitch_channel = $game->user->name;
+            return view('errors.403', compact('twitch_channel'));
+        }
+    }
+
     public function test()
     {
         return view('test');

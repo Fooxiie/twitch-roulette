@@ -16,7 +16,9 @@ return new class extends Migration
         Schema::create('games', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->boolean('state');
+            $table->string('name');
+            $table->boolean('state')->default(false);
+            $table->integer('number_place')->default(5);
             $table->integer('number')->nullable();
             $table->timestamps();
         });

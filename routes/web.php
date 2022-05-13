@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.twitch.connected');
 })->middleware(['auth']);
 
 Route::get('/dashboard', function () {
@@ -29,6 +29,12 @@ Route::get('/connected',                [TwitchController::class, 'connected'])-
 Route::get('/profil',                   [TwitchController::class, 'profil'])->middleware(['auth'])->name('auth.twitch.profil');
 Route::get('/profil/save',              [TwitchController::class,'save'])->middleware(['auth'])->name('auth.twitch.profil.save');
 Route::get('/getjeton',                 [TwitchController::class, 'getJeton'])->middleware(['auth'])->name('auth.wizebot.jeton');
+
+Route::get('/room', function () {
+    return view('room.room');
+})->middleware(['auth'])->name('room');
+Route::get('/room/submit',              [GameController::class, 'submit'])->middleware(['auth'])->name('room.submit');
+Route::get('/room/play',                [GameController::class, 'play'])->middleware(['auth'])->name('room.play');
 
 Route::get('/test',                     [GameController::class, 'test'])->middleware(['auth'])->name('test');
 Route::get('/test/table',               [GameController::class, 'table'])->middleware(['auth'])->name('table');

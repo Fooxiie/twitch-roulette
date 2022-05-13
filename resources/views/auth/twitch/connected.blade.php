@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-200 leading-tight">
             {{ __('Dashboard') }}
         </h2>
     </x-slot>
@@ -38,7 +38,6 @@
     </div>
     <div class="w-48 mx-auto py-4">
         <a href="{{route('table')}}"
-           class="bg-red-800 text-white rounded-full px-2 py-4 mx-auto text-center w-8 hover:bg-red-700 border border-gray-400">Se
-            rendre à la roulette !</a>
+           class="bg-red-800 text-white rounded-full px-2 py-4 mx-auto text-center w-8 hover:bg-red-700 border border-gray-400">Créer ma room !</a>
     </div>
 </x-app-layout>
