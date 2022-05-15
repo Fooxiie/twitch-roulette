@@ -27,7 +27,7 @@ class TwitchController extends Controller
         $isUser = User::query()->where('twitch_token', $user->id)->first();
         if ($isUser) {
             Auth::loginUsingId($isUser->id);
-            return redirect(route('auth.twitch.connected'));
+            return redirect(route('dashboard'));
         } else {
             $newUser = new User();
             $newUser->name = $user->getName();
@@ -37,13 +37,13 @@ class TwitchController extends Controller
             $newUser->twitch_token = $user->getId();
             $newUser->save();
             Auth::login($newUser);
-            return redirect(route('auth.twitch.connected'));
+            return redirect(route('dashboard'));
         }
     }
 
     public function connected()
     {
-        return view('auth.twitch.connected');
+        return view('dashboard');
     }
 
     public function profil() {
