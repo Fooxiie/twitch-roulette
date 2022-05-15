@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
         $role->givePermissionTo('create games');
 
         $role = Role::findOrCreate('moderator');
-        $role->givePermissionTo(['create games', 'delete games', 'see users']);
+        $role->givePermissionTo(['delete games', 'see users']);
 
         $role = Role::findOrCreate('super-admin');
         $role->givePermissionTo(Permission::all());

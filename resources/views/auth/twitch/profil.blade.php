@@ -8,7 +8,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['streamer', 'moderator', 'super-admin']))
+                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['streamer', 'super-admin']))
                 <div class="p-6 bg-white border-b border-gray-200">
                     <span class="text-xl">Gestion Streaming</span>
                     <form method="get" action="{{route('auth.twitch.profil.save')}}">
