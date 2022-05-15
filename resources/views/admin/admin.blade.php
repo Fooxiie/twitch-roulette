@@ -46,6 +46,9 @@
                             <th class="py-2 px-4">Pseudo</th>
                             <th class="py-2 px-4">Date de création</th>
                             <th class="py-2 px-4">Role</th>
+                            @can('edit users')
+                                <th class="py-2 px-4">Actions</th>
+                            @endcan
                             @can('delete users')
                                 <th class="py-2 px-4">Actions</th>
                             @endcan
@@ -57,6 +60,11 @@
                                 <td class="border-b border-slate-600 p-1">{{$user->name}}</td>
                                 <td class="border-b border-slate-600 p-1">{{$user->created_at}}</td>
                                 <td class="border-b border-slate-600 p-1">{{$user->roles->first()['name']}}</td>
+                                @can('edit users')
+                                    <td class="border-b border-slate-600 p-1"><a class="text-blue-400 hover:text-white"
+                                                                                 href="{{route('admin.edit.user', ['userid' => $user->id])}}">Modifier</a>
+                                    </td>
+                                @endcan
                                 @can('delete users')
                                     <td class="border-b border-slate-600 p-1"><a class="text-blue-400 hover:text-white"
                                                                                  href="{{route('admin.delete.user', ['userid' => $user->id])}}">Supprimer</a>

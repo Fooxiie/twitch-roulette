@@ -51,10 +51,14 @@ class DatabaseSeeder extends Seeder
 //        $users[0]->assignRole('moderator');
 //        $users[0]->assignRole('viewer');
 
-//        $users = User::factory(1)->state([
-//            'name' => 'FauxJustin'
-//        ])->create();
-//        $users[0]->assignRole('streamer');
+        $users = User::factory(1)->state([
+            'name' => 'FauxJustin'
+        ])->create();
+        $users[0]->assignRole('streamer');
+        $users = User::factory(1)->state([
+            'name' => 'FausseEnelya74'
+        ])->create();
+        $users[0]->assignRole('streamer');
 //
 //        $users = User::factory(15)->create();
 //        foreach ($users as $user) {
