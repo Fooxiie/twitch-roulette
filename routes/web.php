@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\TwitchController;
 use Illuminate\Support\Facades\Route;
@@ -32,14 +33,23 @@ Route::get('/getjeton',                 [TwitchController::class, 'getJeton'])->
 
 Route::get('/room', function () {
     return view('room.room');
-})->middleware(['auth'])->name('room');
+})->middleware(['auth', 'role:streamer|super-admin'])->name('room');
 Route::get('/room/submit',              [GameController::class, 'submit'])->middleware(['auth'])->name('room.submit');
-Route::get('/room/play',                [GameController::class, 'play'])->middleware(['auth'])->name('room.play');
+Route::get('/room/play',                [GameController::class, 'play'])->middleware(['auth', 'role:streamer|super-admin'])->name('room.play');
 
 Route::get('/test',                     [GameController::class, 'test'])->middleware(['auth'])->name('test');
 Route::get('/test/table',               [GameController::class, 'table'])->middleware(['auth'])->name('table');
 Route::get('/game/test/saveform',       [GameController::class, 'form_result_addbet'])->middleware(['auth'])->name('form.test');
 Route::get('/test/spinRoulette',        [GameController::class, 'spinRoulette'])->middleware(['auth'])->name('test.spin');
 Route::get('/test/verifbet',            [GameController::class, 'verif_bet_for_game'])->middleware(['auth'])->name('test.verifbet');
+
+Route::get('/admin',                    [AdminController::class, 'show'])->middleware(['auth',  'role:super-admin|moderator'])->name('admin.show');
+Route::get('/admin/delete/room',        [AdminController::class, 'deleteRoom'])->middleware(['auth', 'permission:delete games'])->name('admin.delete.room');
+Route::get('/admin/delete/user',        [AdminController::class, 'deleteUser'])->middleware(['auth', 'permission:delete users'])->name(('admin.delete.user'));
+
+Route::get('/errors/403', function () {
+    return view('errors.403');
+});
+
 
 require __DIR__.'/auth.php';

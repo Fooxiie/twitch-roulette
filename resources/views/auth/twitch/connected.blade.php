@@ -8,6 +8,7 @@
     <img src="{{Auth::user()->avatar}}" width="150" height="150"
          class="rounded-full border border-gray-400 mx-auto shadow-2xl" alt="Icone de l'utilisateur"/>
     <p class="text-xl text-center my-4 text-gray-200">Bienvenue <b><u>{{Auth::user()->name}}</u></b></p>
+    @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['streamer', 'super-admin']))
     <div id="error-reports">
         @if (Auth::user()->wizebot_key == null)
             <div class="mx-auto w-1/3 my-12 py-4 rounded text-red-600 justify-center bg-red-200">
@@ -36,8 +37,11 @@
             </div>
         @endif
     </div>
+    @endif
+    @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['streamer', 'super-admin']))
     <div class="w-48 mx-auto py-4">
         <a href="{{route('room')}}"
            class="bg-red-800 text-white rounded-full px-2 py-4 mx-auto text-center w-8 hover:bg-red-700 border border-gray-400">Créer ma room !</a>
     </div>
+    @endif
 </x-app-layout>

@@ -17,11 +17,21 @@
                     </x-nav-link>
                 </div>
                 <!-- Navigation Links -->
+                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['streamer', 'super-admin']))
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('room')" :active="request()->routeIs('room')">
                         {{ __('custom.room') }}
                     </x-nav-link>
                 </div>
+                @endif
+
+                @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['moderator', 'super-admin']))
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('admin.show')" :active="request()->routeIs('admin.*')">
+                        Administration
+                    </x-nav-link>
+                </div>
+                @endif
             </div>
 
             <!-- Settings Dropdown -->

@@ -25,6 +25,8 @@ class DatabaseSeeder extends Seeder
         Permission::create(['name' => 'edit users']);
         Permission::create(['name' => 'delete users']);
 
+        Role::findOrCreate('viewer');
+
         $role = Role::findOrCreate('streamer');
         $role->givePermissionTo('create games');
 
@@ -45,5 +47,18 @@ class DatabaseSeeder extends Seeder
         ])->create();
 
         $users[0]->assignRole('super-admin');
+//        $users[0]->assignRole('streamer');
+//        $users[0]->assignRole('moderator');
+//        $users[0]->assignRole('viewer');
+
+        $users = User::factory(1)->state([
+            'name' => 'FauxJustin'
+        ])->create();
+        $users[0]->assignRole('streamer');
+
+        $users = User::factory(15)->create();
+        foreach ($users as $user) {
+            $user->assignRole('viewer');
+        }
     }
 }
