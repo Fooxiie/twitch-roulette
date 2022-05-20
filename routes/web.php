@@ -29,7 +29,8 @@ Route::get('/auth/twitch/callback',     [TwitchController::class, 'callback'])->
 Route::get('/connected',                [TwitchController::class, 'connected'])->middleware(['auth'])->name('auth.twitch.connected');
 Route::get('/profil',                   [TwitchController::class, 'profil'])->middleware(['auth'])->name('auth.twitch.profil');
 Route::get('/profil/save',              [TwitchController::class,'save'])->middleware(['auth'])->name('auth.twitch.profil.save');
-Route::get('/getjeton',                 [TwitchController::class, 'getJeton'])->middleware(['auth'])->name('auth.wizebot.jeton');
+Route::get('/getjeton', [TwitchController::class, 'getJeton'])->middleware(['auth'])->name('auth.wizebot.jeton');
+Route::post('/profil/activeKey', [TwitchController::class, 'activeKey'])->middleware(['auth'])->name('auth.twitch.profil.activateKey');
 
 Route::get('/room', function () {
     return view('room.room');
@@ -48,6 +49,7 @@ Route::get('/admin/delete/room', [AdminController::class, 'deleteRoom'])->middle
 Route::get('/admin/delete/user', [AdminController::class, 'deleteUser'])->middleware(['auth', 'permission:delete users'])->name(('admin.delete.user'));
 Route::get('/admin/edit/user', [AdminController::class, 'editUser'])->middleware(['auth', 'permission:edit users'])->name('admin.edit.user');
 Route::post('/admin/edit/user/submit', [AdminController::class, 'editUserSubmit'])->middleware(['auth', 'permission:edit users'])->name('admin.edit.user.submit');
+Route::post('/admin/edit/create/key/submit', [AdminController::class, 'keyGenerateSubmit'])->middleware(['auth', 'permission:generateKey'])->name('admin.generate.key');
 
 Route::get('/errors/403', function () {
     return view('errors.403');

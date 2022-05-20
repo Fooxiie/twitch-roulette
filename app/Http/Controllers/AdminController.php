@@ -3,14 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Game;
+use App\Models\Key;
 use App\Models\User;
 use Illuminate\Http\Request;
-use React\Dns\Query\TcpTransportExecutor;
 
 class AdminController extends Controller
 {
-    public function show()
+    public function show(Request $request)
     {
+        if ($request->query('keyadded')) {
+            $keyadded = $request->query('keyadded');
+            return view('admin.admin', compact('keyadded'));
+        }
         return view('admin.admin');
     }
 
@@ -43,5 +47,14 @@ class AdminController extends Controller
         $user = User::query()->find($request->query('userid'));
         $user->syncRoles($request->input('role'));
         return redirect(route('admin.show'));
+    }
+
+    public function keyGenerateSubmit(Request $request)
+    {
+        $key = new Key();
+        $key->key = Key::generateKey();
+        $key->type = $request->input('typeKey');
+        $key->save();
+        return redirect(route('admin.show', ['keyadded' => $key->key]));
     }
 }
