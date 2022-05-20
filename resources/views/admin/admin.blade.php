@@ -59,7 +59,8 @@
                             <tr class="text-gray-100">
                                 <td class="border-b border-slate-600 p-1">{{$user->name}}</td>
                                 <td class="border-b border-slate-600 p-1">{{$user->created_at}}</td>
-                                <td class="border-b border-slate-600 p-1">{{$user->roles->first()['name']}}</td>
+                                *
+                                <td class="border-b border-slate-600 p-1">{{(sizeof($user->roles) > 0) ? $user->roles->first()['name'] : "Aucun"}}</td>
                                 @can('edit users')
                                     <td class="border-b border-slate-600 p-1"><a class="text-blue-400 hover:text-white"
                                                                                  href="{{route('admin.edit.user', ['userid' => $user->id])}}">Modifier</a>
