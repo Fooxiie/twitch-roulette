@@ -36,7 +36,8 @@ Route::get('/room', function () {
     return view('room.room');
 })->middleware(['auth', 'role:streamer|super-admin'])->name('room');
 Route::get('/room/submit',              [GameController::class, 'submit'])->middleware(['auth'])->name('room.submit');
-Route::get('/room/play',                [GameController::class, 'play'])->middleware(['auth', 'role:streamer|super-admin'])->name('room.play');
+Route::get('/room/play', [GameController::class, 'play'])->middleware(['auth', 'role:streamer|super-admin'])->name('room.play');
+Route::get('/room/playAsGuest', [GameController::class, 'playAsGuest'])->middleware(['auth', 'role:viewer|streamer|moderator|super-admin'])->name('room.play.guest');
 
 Route::get('/test', [GameController::class, 'test'])->middleware(['auth'])->name('test');
 Route::get('/test/table', [GameController::class, 'table'])->middleware(['auth'])->name('table');

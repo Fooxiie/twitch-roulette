@@ -100,6 +100,9 @@ class TwitchController extends Controller
                     Auth::user()->assignRole('super-admin');
                     break;
             }
+            $key->used = 1;
+            $key->usedby = Auth::user();
+            $key->save();
             return redirect(route('auth.twitch.profil', ['success' => __('custom.keyactivated')]));
         } else {
             return redirect(route('auth.twitch.profil', ['error' => __('custom.keynotexist')]));

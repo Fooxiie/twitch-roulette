@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\Http;
 class GameController extends Controller
 {
 
-    public function submit(Request $request) {
+    public function submit(Request $request)
+    {
         $game = new Game();
         $game->user_id = Auth::user()->id;
         $game->name = $request->input('room_name');
@@ -20,10 +21,23 @@ class GameController extends Controller
         return redirect(route('room.play', ['idRoom' => $game->id]));
     }
 
-    public function play(Request $request) {
+    public function play(Request $request)
+    {
         $idRoom = $request->query('idRoom');
         $game = Game::query()->find($idRoom)->get()->first();
         if (Auth::user()->id == $game->user_id) {
+            return view('table.TwitchTable', compact('game'));
+        } else {
+            $twitch_channel = $game->user->name;
+            return view('errors.403', compact('twitch_channel'));
+        }
+    }
+
+    public function playAsGuest(Request $request)
+    {
+        $idRoom = $request->query('idRoom');
+        $game = Game::query()->find($idRoom)->get()->first();
+        if (Auth::user()->hasRole('viewer')) {
             return view('table.table');
         } else {
             $twitch_channel = $game->user->name;
@@ -36,7 +50,8 @@ class GameController extends Controller
         return view('test');
     }
 
-    public function table() {
+    public function table()
+    {
         return view('table.table');
     }
 
@@ -65,10 +80,10 @@ class GameController extends Controller
         $html = "";
         foreach ($game->bets as $bet) {
             if ($bet->number != $game->number) {
-                $html .= "<div class='flex bg-red-500'>".$bet->viewer." loose ".$bet->amount." boxs !</div>";
+                $html .= "<div class='flex bg-red-500'>" . $bet->viewer . " loose " . $bet->amount . " boxs !</div>";
                 $bet->winned = false;
             } else {
-                $html .= "<div class='flex bg-green'>".$bet->viewer." win ".$bet->amount." boxs !</div>";
+                $html .= "<div class='flex bg-green'>" . $bet->viewer . " win " . $bet->amount . " boxs !</div>";
                 $bet->winned = true;
                 $nbWinner = true;
             }
@@ -76,7 +91,7 @@ class GameController extends Controller
             $this->report_bet($bet);
         }
 
-        $html = "<h3>Nombre de gagnant : {$nbWinner}</h3>".$html;
+        $html = "<h3>Nombre de gagnant : {$nbWinner}</h3>" . $html;
 
         return $html;
     }

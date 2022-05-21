@@ -16,7 +16,7 @@
                             <label class="text-gray-200" for="role">Role de l'utilisateur</label>
                             <select id="role" name="role" class="rounded bg-gray-700 text-gray-200">
                                 @foreach(\Spatie\Permission\Models\Role::all() as $role)
-                                    @if($user->roles[0]->name == $role->name)
+                                    @if(sizeof($user->roles) > 0 && $user->roles[0]->name == $role->name)
                                         <option selected name="{{$role->name}}">{{$role->name}}</option>
                                     @else
                                         <option name="{{$role->name}}">{{$role->name}}</option>
