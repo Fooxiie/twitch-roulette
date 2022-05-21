@@ -12,7 +12,7 @@
                     <span class="text-white text-xl">Gestion des games ♠♣♥♦ !</span>
                     <table class="table-fixed w-full text-left">
                         <thead>
-                        <tr class="bg-gray-700 text-gray-200 rounded">
+                        <tr class="bg-red-800 text-white rounded">
                             <th class="py-2 px-4">Nom de la game</th>
                             <th class="py-2 px-4">Date de création</th>
                             <th class="py-2 px-4">Nb places</th>
@@ -28,8 +28,9 @@
                                 <td class="border-b border-slate-600 p-1">{{$game->created_at}}</td>
                                 <td class="border-b border-slate-600 p-1">{{$game->number_place}}</td>
                                 @can('delete games')
-                                    <td class="border-b border-slate-600 p-1"><a class="text-blue-400 hover:text-white"
-                                                                                 href="{{route('admin.delete.room', ['roomid' => $game->id])}}">Supprimer</a>
+                                    <td class="border-b border-slate-600 p-1"><a
+                                            class="text-white hover:text-red-600 underline"
+                                            href="{{route('admin.delete.room', ['roomid' => $game->id])}}">Supprimer</a>
                                     </td>
                                 @endcan
                             </tr>
@@ -42,7 +43,7 @@
                     <span class="text-white text-xl">Gestion des users 👩‍💻 !</span>
                     <table class="table-fixed w-full text-left">
                         <thead>
-                        <tr class="bg-gray-700 text-gray-200 rounded">
+                        <tr class="bg-red-800 text-white rounded">
                             <th class="py-2 px-4">Pseudo</th>
                             <th class="py-2 px-4">Date de création</th>
                             <th class="py-2 px-4">Role</th>
@@ -62,13 +63,15 @@
                                 *
                                 <td class="border-b border-slate-600 p-1">{{(sizeof($user->roles) > 0) ? $user->roles->first()['name'] : "Aucun"}}</td>
                                 @can('edit users')
-                                    <td class="border-b border-slate-600 p-1"><a class="text-blue-400 hover:text-white"
-                                                                                 href="{{route('admin.edit.user', ['userid' => $user->id])}}">Modifier</a>
+                                    <td class="border-b border-slate-600 p-1"><a
+                                            class="text-white hover:text-red-600 underline"
+                                            href="{{route('admin.edit.user', ['userid' => $user->id])}}">Modifier</a>
                                     </td>
                                 @endcan
                                 @can('delete users')
-                                    <td class="border-b border-slate-600 p-1"><a class="text-blue-400 hover:text-white"
-                                                                                 href="{{route('admin.delete.user', ['userid' => $user->id])}}">Supprimer</a>
+                                    <td class="border-b border-slate-600 p-1"><a
+                                            class="text-white hover:text-red-600 underline"
+                                            href="{{route('admin.delete.user', ['userid' => $user->id])}}">Supprimer</a>
                                     </td>
                                 @endcan
                             </tr>
@@ -80,11 +83,11 @@
 
                     <span class="text-white text-xl">Création de clé 🔑</span>
                     @isset($keyadded)
-                        <div class="bg-green-400 rounded p-3 text-black">
+                        <div class="bg-gray-700 rounded-lg p-3 text-white">
                             <label for="keyadded">Ajout de la clef :</label>
-                            <input type="text" disabled value="{{$keyadded}}" id="keyadded" class="w-1/2"/>
+                            <input type="text" disabled value="{{$keyadded}}" id="keyadded" class="w-1/2 text-black"/>
                             <div class="tooltip">
-                                <button class="h-full align-middle" id="copyBtn" onclick="myFunction()"
+                                <button class="h-full align-middle animate-pulse" id="copyBtn" onclick="myFunction()"
                                         onmouseout="outFunc()">
                                     <span class="tooltiptext" id="myTooltip">Copy to clipboard</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20"
@@ -102,7 +105,7 @@
                         <form method="post" action="{{route('admin.generate.key')}}">
                             @csrf
                             <label>
-                                <select name="typeKey" id="typeKey">
+                                <select name="typeKey" id="typeKey" class="rounded-lg">
                                     <option value="addViewer">Role : viewer</option>
                                     <option value="addStreamer">Role : streamer</option>
                                     <option value="addModerator">Role : moderator</option>
@@ -111,7 +114,9 @@
                                     @endif
                                 </select>
                                 <br/>
-                                <input class="text-blue-400 hover:text-white" type="submit"/>
+                                <br/>
+                                <input class="text-white bg-red-900 rounded-lg p-2 hover:text-white hover:bg-red-700"
+                                       type="submit"/>
                             </label>
                         </form>
                     </div>

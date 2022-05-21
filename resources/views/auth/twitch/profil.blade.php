@@ -19,7 +19,7 @@
                                 <x-input id="wizebot_key" class="block mt-1 w-full" type="text" name="wizebotkey"
                                          :value="Auth::user()->wizebot_key" required autofocus></x-input>
                             </div>
-                            <input type="submit">
+                            <input class="text-red-600 hover:text-red-300 underline" type="submit">
                         </form>
                     </div>
                 @endif
@@ -62,7 +62,7 @@
                             <x-input id="key" class="block mt-1 w-full" type="text" name="key"
                                      required></x-input>
                         </div>
-                        <input type="submit">
+                        <input class="text-red-600 hover:text-red-300 underline" type="submit">
                     </form>
                 </div>
             </div>
