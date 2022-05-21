@@ -101,7 +101,7 @@ class TwitchController extends Controller
                     break;
             }
             $key->used = 1;
-            $key->usedby = Auth::user();
+            $key->usedby = Auth::user()->id;
             $key->save();
             return redirect(route('auth.twitch.profil', ['success' => __('custom.keyactivated')]));
         } else {
