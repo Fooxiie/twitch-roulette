@@ -51,6 +51,7 @@ Route::get('/admin/delete/user', [AdminController::class, 'deleteUser'])->middle
 Route::get('/admin/edit/user', [AdminController::class, 'editUser'])->middleware(['auth', 'permission:edit users'])->name('admin.edit.user');
 Route::post('/admin/edit/user/submit', [AdminController::class, 'editUserSubmit'])->middleware(['auth', 'permission:edit users'])->name('admin.edit.user.submit');
 Route::post('/admin/edit/create/key/submit', [AdminController::class, 'keyGenerateSubmit'])->middleware(['auth', 'permission:generateKey'])->name('admin.generate.key');
+Route::get('/admin/list/user', [AdminController::class, 'listUsers'])->middleware(['auth', 'permission:see users'])->name('admin.list.user');
 
 Route::get('/errors/403', function () {
     return view('errors.403');

@@ -40,7 +40,9 @@
 
                     <hr class="m-5"/>
 
-                    <span class="text-white text-xl">Gestion des users 👩‍💻 !</span>
+                    <span class="text-white text-xl">Gestion des users 👩‍💻 !</span> <a
+                        class="text-white underline hover:text-red-300" href="{{route('admin.list.user')}}">Voir tout le
+                        monde</a>
                     <table class="table-fixed w-full text-left">
                         <thead>
                         <tr class="bg-red-800 text-white rounded">

@@ -57,4 +57,10 @@ class AdminController extends Controller
         $key->save();
         return redirect(route('admin.show', ['keyadded' => $key->key]));
     }
+
+    public function listUsers()
+    {
+        $users = User::all();
+        return view('admin.admin_list_user', compact('users'));
+    }
 }
