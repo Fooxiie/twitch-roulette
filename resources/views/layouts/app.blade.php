@@ -27,10 +27,24 @@
                 </div>
             </header>
 
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+                <!-- Page Content -->
+                <main>
+                    {{ $slot }}
+                </main>
+        </div>
+        <div class="fixed static bottom-0 flex left-0 bg-gray-500 flex w-full text-white">
+            <div class="mx-2">
+                @php($today = Carbon\Carbon::now())
+                <small>&copy; Copyright {{$today->format('Y')}}, Fooxiie</small>
+            </div>
+            <div class="absolute flex inset-y-0 right-0 align-middle mx-2 flex">
+                <div class="mx-2">
+                    Signaler un bug
+                </div>
+                <div>
+                    V1.0.1
+                </div>
+            </div>
         </div>
     </body>
 </html>
