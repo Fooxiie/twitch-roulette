@@ -39,10 +39,11 @@
             </div>
             <div class="absolute flex inset-y-0 right-0 align-middle mx-2 flex">
                 <div class="mx-2">
-                    Signaler un bug
+                    <a href="{{Route('bug.report', ['page_reported' => Illuminate\Support\Facades\Route::current()->uri()])}}"
+                       class="underline bg-gray-700 p-1 m-2">Signaler un bug</a>
                 </div>
                 <div>
-                    V1.0.1
+                    <small>V1.0.1</small>
                 </div>
             </div>
         </div>

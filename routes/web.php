@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BugController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\TwitchController;
 use Illuminate\Support\Facades\Route;
@@ -52,6 +53,10 @@ Route::get('/admin/edit/user', [AdminController::class, 'editUser'])->middleware
 Route::post('/admin/edit/user/submit', [AdminController::class, 'editUserSubmit'])->middleware(['auth', 'permission:edit users'])->name('admin.edit.user.submit');
 Route::post('/admin/edit/create/key/submit', [AdminController::class, 'keyGenerateSubmit'])->middleware(['auth', 'permission:generateKey'])->name('admin.generate.key');
 Route::get('/admin/list/user', [AdminController::class, 'listUsers'])->middleware(['auth', 'permission:see users'])->name('admin.list.user');
+
+Route::get('/bugreporter', [BugController::class, 'report'])->middleware(['auth'])->name('bug.report');
+Route::post('/bugreporter/submit', [BugController::class, 'report_submit'])->middleware(['auth'])->name('bug.report.submit');
+Route::get('/bugreporter/submited', [BugController::class, 'report_submited'])->middleware(['auth'])->name('bug.bug_submited');
 
 Route::get('/errors/403', function () {
     return view('errors.403');
