@@ -36,10 +36,15 @@ class GameController extends Controller
     public function playAsGuest(Request $request)
     {
         $idRoom = $request->query('idRoom');
-        $game = Game::query()->find($idRoom)->get()->first();
+        $game = Game::query()->where('id', $idRoom)->get()->first();
         $guest = true;
+        $participant = false;
+        if ($game->participants()->where('user_id', Auth::user()->id)->get()
+                ->first() != null) {
+            $participant = true;
+        }
         if (Auth::user()->hasRole('viewer')) {
-            return view('table.table', compact('guest', 'idRoom'));
+            return view('table.table', compact('participant', 'guest', 'idRoom'));
         } else {
             $twitch_channel = $game->user->name;
             return view('errors.403', compact('twitch_channel'));
@@ -50,6 +55,10 @@ class GameController extends Controller
     {
         $room = $request->query('roomid');
         $game = Game::query()->where('id', $room)->get()->first();
+        if ($game->participants()->where('user_id', Auth::user()->id)->get()
+                ->first() != null) {
+            return 3;
+        }
         if ($game->participants()->count() >= $game->number_place) {
             return 2;
         }
