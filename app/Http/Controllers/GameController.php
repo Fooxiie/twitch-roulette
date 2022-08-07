@@ -24,7 +24,7 @@ class GameController extends Controller
     public function play(Request $request)
     {
         $idRoom = $request->query('idRoom');
-        $game = Game::query()->find($idRoom)->get()->first();
+        $game = Game::query()->where('id', $idRoom)->get()->first();
         if (Auth::user()->id == $game->user_id) {
             return view('table.TwitchTable', compact('game'));
         } else {
@@ -37,11 +37,27 @@ class GameController extends Controller
     {
         $idRoom = $request->query('idRoom');
         $game = Game::query()->find($idRoom)->get()->first();
+        $guest = true;
         if (Auth::user()->hasRole('viewer')) {
-            return view('table.table');
+            return view('table.table', compact('guest', 'idRoom'));
         } else {
             $twitch_channel = $game->user->name;
             return view('errors.403', compact('twitch_channel'));
+        }
+    }
+
+    public function sit_at_table(Request $request)
+    {
+        $room = $request->query('roomid');
+        $game = Game::query()->where('id', $room)->get()->first();
+        if ($game->participants()->count() >= $game->number_place) {
+            return 2;
+        }
+        if (!Auth::user()->places()->find($room)) {
+            Auth::user()->places()->attach($room);
+            return 0;
+        } else {
+            return 1;
         }
     }
 

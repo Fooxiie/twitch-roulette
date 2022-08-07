@@ -37,6 +37,7 @@ class TwitchController extends Controller
             $newUser->avatar = $user->getAvatar();
             $newUser->twitch_token = $user->getId();
             $newUser->save();
+            $newUser->assignRole('viewer');
             Auth::login($newUser);
             return redirect(route('dashboard'));
         }

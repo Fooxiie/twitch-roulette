@@ -49,9 +49,9 @@ class DatabaseSeeder extends Seeder
         ])->create();
 
         $users[0]->assignRole('super-admin');
-//        $users[0]->assignRole('streamer');
+        $users[0]->assignRole('streamer');
 //        $users[0]->assignRole('moderator');
-//        $users[0]->assignRole('viewer');
+        $users[0]->assignRole('viewer');
 
         $users = User::factory(1)->state([
             'name' => 'FauxJustin'
