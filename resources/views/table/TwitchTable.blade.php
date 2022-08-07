@@ -13,7 +13,8 @@
 
     <div class="m-auto text-center absolute left-1/2 top-4 w-auto p-4 mt-4
     bg-gray-400 font-bold text-white border-gray-200 border-2">
-        {{$game->participants()->count()}}/{{$game->number_place}} sièges
+        <span id="nbParticipant">{{$game->participants()->count()
+        }}</span>/{{$game->number_place}} sièges
     </div>
 
     <div
@@ -444,21 +445,23 @@
         </div>
     </div>
 
-        <div class="fixed bottom-0 left-0 bg-gray-400 p-5 w-full">
-            <h3 class="font-bold text-xl">Participant(s) : </h3>
-            @foreach($game->participants as $player)
-                <div class="bg-red-700 inline-block p-3 text-white
-                    rounded-lg">
-                    <span class="font-bold">{{$player->name}}</span><br/>
-                    @php
-                        $url = "https://wapi.wizebot.tv/api/currency/";
-                        $url .= $game->user->wizebot_key."/get/".$player->name;
-                        $curl = curl_init();
-                        curl_setopt($curl, CURLOPT_URL, $url);
-                        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-                        $output = curl_exec($curl);
-                        curl_close($curl);
-                        $money = number_format(json_decode($output)->currency);
+    <div class="fixed bottom-0 left-0 bg-gray-400 p-5 w-full">
+        <h3 class="font-bold text-xl">Participant(s) : </h3>
+        @foreach($game->participants as $player)
+            <div class="bg-red-700 inline-block p-3 text-white
+                    rounded-lg" id="{{$player->name}}">
+                    <span><a href="#" onclick="removePlayer({{$player->name}})
+                            ">✖</a></span>
+                <span class="font-bold">{{$player->name}}</span><br/>
+                @php
+                    $url = "https://wapi.wizebot.tv/api/currency/";
+                    $url .= $game->user->wizebot_key."/get/".$player->name;
+                    $curl = curl_init();
+                    curl_setopt($curl, CURLOPT_URL, $url);
+                    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+                    $output = curl_exec($curl);
+                    curl_close($curl);
+                    $money = number_format(json_decode($output)->currency);
                     @endphp
                     {{$money}}💰
                 </div>
@@ -505,6 +508,21 @@
             xhttp.open("GET", '{{route('auth.wizebot.jeton')}}', true);
             xhttp.send();
         })
+
+        function removePlayer(name) {
+            console.log(name.id);
+            name.remove()
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    var elmt = document.getElementById('nbParticipant');
+                    elmt.innerHTML = this.responseText;
+                }
+            }
+            xhttp.open("GET", '{{route('room.sit.remove', array('roomId' =>
+                $game->id))}}' + '&name=' + name.id, true);
+            xhttp.send();
+        }
 
         function chooseTile(elmt) {
             @foreach (Auth::user()->gameHosted as $game)

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Bet;
 use App\Models\Game;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -68,6 +69,18 @@ class GameController extends Controller
         } else {
             return 1;
         }
+    }
+
+    public function remove_sit(Request $request)
+    {
+        $name = $request->query('name');
+        $idRoom = $request->query('roomId');
+        $room = Game::query()->where('id', $idRoom)->get()->first();
+        $user = User::query()->where('name', $name)->get()->first();
+        if ($room->user_id == Auth::user()->id) {
+            $room->participants()->where('user_id', $user->id)->delete();
+        }
+        return $room->participants()->count();
     }
 
     public function test()
