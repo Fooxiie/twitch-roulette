@@ -444,17 +444,36 @@
         </div>
     </div>
 
-    <div class="fixed bg-gray-800 right-10 bottom-10">Valider</div>
+        <div class="fixed bottom-0 left-0 bg-gray-400 p-5 w-full">
+            <h3 class="font-bold text-xl">Participant(s) : </h3>
+            @foreach($game->participants as $player)
+                <div class="bg-red-700 inline-block p-3 text-white
+                    rounded-lg">
+                    <span class="font-bold">{{$player->name}}</span><br/>
+                    @php
+                        $url = "https://wapi.wizebot.tv/api/currency/";
+                        $url .= $game->user->wizebot_key."/get/".$player->name;
+                        $curl = curl_init();
+                        curl_setopt($curl, CURLOPT_URL, $url);
+                        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+                        $output = curl_exec($curl);
+                        curl_close($curl);
+                        $money = number_format(json_decode($output)->currency);
+                    @endphp
+                    {{$money}}💰
+                </div>
+            @endforeach
+        </div>
 
-    <div class="fixed top-0 left-0 bg-gray-400 p-5">
-        <label>
-            Lien de la table
-            <input type="text" id="sharelink"
-                   value="{{route('room.play.guest', ['idRoom' => $game->id])}}"/>
-        </label>
-        <div class="tooltip-reverse">
-            <button class="h-full align-middle" id="copyBtn"
-                    onclick="myFunction()"
+        <div class="fixed top-0 left-0 bg-gray-400 p-5">
+            <label>
+                Lien de la table
+                <input type="text" id="sharelink"
+                       value="{{route('room.play.guest', ['idRoom' => $game->id])}}"/>
+            </label>
+            <div class="tooltip-reverse">
+                <button class="h-full align-middle" id="copyBtn"
+                        onclick="myFunction()"
                     onmouseout="outFunc()">
                 <span class="tooltiptext"
                       id="myTooltip">Copy to clipboard</span>
