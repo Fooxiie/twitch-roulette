@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\BetAdded;
 use App\Events\JoinRoom;
 use App\Models\Bet;
 use App\Models\Game;
@@ -110,6 +111,22 @@ class GameController extends Controller
             $user->places()->detach($room);
         }
         return $room->participants()->count();
+    }
+
+    public function submit_bet(Request $request)
+    {
+        $bets = json_decode($request->query('bets'));
+        foreach ($bets as $key => $bet) {
+            $bet_to_db = new Bet();
+            $bet_to_db->game_id = $request->query('gameid');
+            $bet_to_db->viewer_id = Auth::user()->id;
+            $bet_to_db->amount = $bet;
+            $bet_to_db->number = $key;
+            $bet_to_db->save();
+        }
+        event(new BetAdded('roomRoulette-' . $request->query('gameid'),
+            Auth::user()->id, $request->query('gameid')));
+        return 0;
     }
 
     public function test()

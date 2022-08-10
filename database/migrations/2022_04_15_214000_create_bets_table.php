@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('bets', function (Blueprint $table) {
             $table->id();
             $table->foreignId('game_id')->constrained('games');
-            $table->string('viewer');
+            $table->foreignId('viewer_id')->constrained('users');
             $table->integer('amount');
             $table->integer('number');
             $table->boolean('winned')->nullable();

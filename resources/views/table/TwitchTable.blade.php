@@ -689,5 +689,9 @@
                     true);
                 xhttp.send();
             });
+
+            channel.bind('bet_added', function (data) {
+                console.log(data);
+            });
         </script>
 </x-guest-layout>

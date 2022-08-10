@@ -436,7 +436,12 @@
         </div>
     </div>
 
-    <div class="fixed bg-gray-800 right-10 bottom-10">Valider</div>
+    <button id="btn_submit_bet" onclick="submit_bets()" class="fixed
+    bg-gray-500
+    hover:bg-gray-400 text-white
+     font-bold py-2 px-4 border-b-4 border-gray-700 hover:border-gray-500
+     rounded right-10 bottom-10">Valider
+    </button>
 
     <script>
         let bet = {};
@@ -484,6 +489,22 @@
             }
             xhttp.open("GET", '{{route('room.sit',
                 array('roomid' => $idRoom))}}',
+                true);
+            xhttp.send();
+        }
+
+        function submit_bets() {
+            const obj = JSON.stringify(bet);
+            btn = document.getElementById('btn_submit_bet');
+            btn.disabled = true;
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    console.log(this.responseText);
+                }
+            }
+            xhttp.open("GET", '{{route('room.submit_bet')}}?bets=' +
+                encodeURIComponent(obj) + '&gameid=' + {{$idRoom}},
                 true);
             xhttp.send();
         }
