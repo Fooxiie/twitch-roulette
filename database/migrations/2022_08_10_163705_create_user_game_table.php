@@ -12,13 +12,9 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('users_games', function (Blueprint $table) {
-            $table->foreignId('user_id')->constrained('users')
-                ->cascadeOnDelete();
-            $table->foreignId('game_id')->constrained('games')
-                ->cascadeOnDelete();
-            $table->primary(['user_id', 'game_id']);
-            $table->timestamps();
+        Schema::create('user_game', function (Blueprint $table) {
+            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('game_id')->constrained('games');
         });
     }
 
@@ -29,6 +25,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('users_games');
+        Schema::dropIfExists('user_game');
     }
 };

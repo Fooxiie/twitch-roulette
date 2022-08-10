@@ -78,7 +78,7 @@ class GameController extends Controller
         $room = Game::query()->where('id', $idRoom)->get()->first();
         $user = User::query()->where('name', $name)->get()->first();
         if ($room->user_id == Auth::user()->id) {
-            $room->participants()->where('user_id', $user->id)->delete();
+            $user->places()->detach($room);
         }
         return $room->participants()->count();
     }
@@ -95,7 +95,9 @@ class GameController extends Controller
 
     public function form_result_addbet(Request $request)
     {
-        if ($this->addBet(1, $request->input('pseudo'), $request->input('amount'), $request->input('chiffre'))) {
+        if ($this->addBet(1, $request->input('pseudo'),
+            $request->input('amount'),
+            $request->input('chiffre'))) {
             return redirect(route('test'));
         } else {
             return 'ERROR !!';

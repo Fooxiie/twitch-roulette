@@ -54,6 +54,6 @@ class User extends Authenticatable
 
     public function places(): BelongsToMany
     {
-        return $this->BelongsToMany(Game::class, 'users_games');
+        return $this->BelongsToMany(Game::class, 'user_game');
     }
 }

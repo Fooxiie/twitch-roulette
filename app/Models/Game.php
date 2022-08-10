@@ -24,6 +24,6 @@ class Game extends Model
 
     public function participants(): BelongsToMany
     {
-        return $this->BelongsToMany(User::class, 'users_games');
+        return $this->belongsToMany(User::class, 'user_game');
     }
 }
