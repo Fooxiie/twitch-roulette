@@ -445,9 +445,10 @@
         </div>
     </div>
 
-    <div class="fixed bottom-0 left-0 bg-gray-400 p-5 w-full">
-        <h3 class="font-bold text-xl">Participant(s) : </h3>
-        @foreach($game->participants as $player)
+        <div id="div_participant" class="fixed bottom-0 left-0 bg-gray-400 p-5
+    w-full">
+            <h3 class="font-bold text-xl">Participant(s) : </h3>
+            @foreach($game->participants as $player)
             <div class="bg-red-700 inline-block p-3 text-white
                     rounded-lg" id="{{$player->name}}">
                     <span><a href="#" onclick="removePlayer({{$player->name}})
@@ -502,7 +503,7 @@
             xhttp.onreadystatechange = function () {
                 if (this.readyState === 4 && this.status === 200) {
                     playerJeton = this.responseText;
-                    console.log(playerJeton);
+                    console.log('jetons : ' + playerJeton);
                 }
             }
             xhttp.open("GET", '{{route('auth.wizebot.jeton')}}', true);
@@ -510,7 +511,7 @@
         })
 
         function removePlayer(name) {
-            console.log(name.id);
+            console.log('remove : ' + name.id);
             name.remove()
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function () {
@@ -632,20 +633,61 @@
             validate = false;
         }
 
-    </script>
-
-    <script>
-        function myFunction() {
-            let copyText = document.getElementById("sharelink");
-            navigator.clipboard.writeText(copyText.value);
-
-            let tooltip = document.getElementById("myTooltip");
-            tooltip.innerHTML = "Copied !"
+        function updateNbParticipant() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    var elmt = document.getElementById('nbParticipant');
+                    elmt.innerHTML = this.responseText;
+                }
+            }
+            xhttp.open("GET", '{{route('room.site.count', array('roomId' =>
+                $game->id))}}', true);
+            xhttp.send();
         }
 
-        function outFunc() {
-            var tooltip = document.getElementById("myTooltip");
-            tooltip.innerHTML = "Copy to clipboard";
-        }
     </script>
+
+        <script>
+            function myFunction() {
+                let copyText = document.getElementById("sharelink");
+                navigator.clipboard.writeText(copyText.value);
+
+                let tooltip = document.getElementById("myTooltip");
+                tooltip.innerHTML = "Copied !"
+            }
+
+            function outFunc() {
+                var tooltip = document.getElementById("myTooltip");
+                tooltip.innerHTML = "Copy to clipboard";
+            }
+        </script>
+
+        <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+        <script>
+
+            // Enable pusher logging - don't include this in production
+            Pusher.logToConsole = true;
+
+            var pusher = new Pusher('e6e2d9980c0505d622f1', {
+                cluster: 'eu'
+            });
+
+            var channel = pusher.subscribe('roomRoulette-{{$game->id}}');
+            channel.bind('room_joined', function (data) {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState === 4 && this.status === 200) {
+                        playerJeton = this.responseText;
+                        document.getElementById('div_participant')
+                            .innerHTML += playerJeton;
+                        updateNbParticipant();
+                    }
+                }
+                xhttp.open("GET", '{{route('room.pusher.print.join',
+                    array('game_id' => $game->id))}}&pseudo=' + data.pseudo,
+                    true);
+                xhttp.send();
+            });
+        </script>
 </x-guest-layout>

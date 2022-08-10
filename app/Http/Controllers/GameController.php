@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\JoinRoom;
 use App\Models\Bet;
 use App\Models\Game;
 use App\Models\User;
@@ -65,10 +66,38 @@ class GameController extends Controller
         }
         if (!Auth::user()->places()->find($room)) {
             Auth::user()->places()->attach($room);
+            event(new JoinRoom(Auth::user()->name, 'roomRoulette-' . $game->id));
             return 0;
         } else {
             return 1;
         }
+    }
+
+    public function count_sit_table(Request $request)
+    {
+        $room = Game::query()->where('id', $request->query('roomId'))
+            ->get()->first();
+        return $room->participants()->count();
+    }
+
+    public function print_participant(Request $request)
+    {
+        $url = "https://wapi.wizebot.tv/api/currency/";
+        $game = Game::query()->where('id', $request->query('game_id'))
+            ->get()->first();
+        $url .= $game->user->wizebot_key . "/get/" . $request->query('pseudo');
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        $output = curl_exec($curl);
+        curl_close($curl);
+        $money = number_format(json_decode($output)->currency);
+        return '<div class="bg-red-700 inline-block p-3 text-white
+                    rounded-lg" id="' . $request->query('pseudo') . '">
+                    <span><a href="#" onclick="removePlayer(' . $request->query('pseudo') . ')">✖</a></span>
+                <span class="font-bold">' . $request->query('pseudo') . '</span><br/>
+                    ' . $money . '💰
+                </div>';
     }
 
     public function remove_sit(Request $request)
