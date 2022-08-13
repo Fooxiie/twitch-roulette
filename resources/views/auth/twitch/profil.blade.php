@@ -5,26 +5,35 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    <div class="">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <x-tile class="mt-0">
                 @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['streamer', 'super-admin']))
-                    <div class="p-6 bg-white border-b border-gray-200">
-                        <span class="text-xl">Gestion Streaming</span>
-                        <form method="get" action="{{route('auth.twitch.profil.save')}}">
+                    <div>
+                        <span class="text-xl text-white">Gestion
+                            Streaming</span>
+                        <br/>
+                        <form method="get"
+                              action="{{route('auth.twitch.profil.save')}}">
                             @csrf
                             <div>
-                                <x-label for="wizebot_key" :value="__('Clé Wizebot')"></x-label>
+                                <x-label for="wizebot_key"
+                                         :value="__('Clé Wizebot')"></x-label>
 
-                                <x-input id="wizebot_key" class="block mt-1 w-full" type="text" name="wizebotkey"
-                                         :value="Auth::user()->wizebot_key" required autofocus></x-input>
+                                <x-input id="wizebot_key" class="block mt-1
+                                w-full text-black" type="text" name="wizebotkey"
+                                         :value="Auth::user()->wizebot_key"
+                                         required autofocus></x-input>
                             </div>
-                            <input class="text-red-600 hover:text-red-300 underline" type="submit">
+                            <input class="text-white
+                            underline" type="submit">
                         </form>
                     </div>
                 @endif
+            </x-tile>
 
-                <div class="p-6 bg-white border-b border-gray-200">
+            <x-tile class="mt-0">
+                <div>
                     <span class="text-xl">Vos permissions</span>
                     <br/>
                     @foreach(\Illuminate\Support\Facades\Auth::user()->roles as $role)
@@ -39,8 +48,10 @@
                         </div>
                     @endforeach
                 </div>
+            </x-tile>
 
-                <div class="p-6 bg-white border-b border-gray-200">
+            <x-tile class="mt-0">
+                <div class="">
                     <span class="text-xl">Activer une clef</span>
                     @isset($error)
                         <div class="bg-red-400 rounded p-3 text-white">
@@ -57,15 +68,16 @@
                     <form method="post" action="{{route('auth.twitch.profil.activateKey')}}">
                         @csrf
                         <div>
-                            <label for="key">Clé à activer</label>
+                            <x-label for="key">Clé à activer</x-label>
 
-                            <x-input id="key" class="block mt-1 w-full" type="text" name="key"
+                            <x-input id="key" class="block mt-1 w-full
+                            text-black" type="text" name="key"
                                      required></x-input>
                         </div>
-                        <input class="text-red-600 hover:text-red-300 underline" type="submit">
+                        <input class="text-white underline" type="submit">
                     </form>
                 </div>
-            </div>
+            </x-tile>
         </div>
     </div>
 </x-app-layout>

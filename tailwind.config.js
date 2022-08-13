@@ -11,6 +11,12 @@ module.exports = {
         extend: {
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
+                roboto: ['Roboto Condensed', ...defaultTheme.fontFamily.sans]
+            },
+            colors: {
+                'casino': '#972e33',
+                'blackAccent': '#323232',
+                'newBlack': '#1A1A1AFF'
             },
         },
     },
