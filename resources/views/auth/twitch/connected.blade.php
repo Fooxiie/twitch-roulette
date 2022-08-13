@@ -6,7 +6,8 @@
     </x-slot>
 
     <img src="{{Auth::user()->avatar}}" width="150" height="150"
-         class="rounded-full border border-gray-400 mx-auto shadow-2xl" alt="Icone de l'utilisateur"/>
+         class="rounded-full border border-gray-400 mx-auto shadow-2xl
+         border-2 border-white" alt="Icone de l'utilisateur"/>
     <p class="text-xl text-center my-4 text-gray-200">Bienvenue <b><u>{{Auth::user()->name}}</u></b></p>
     @if(\Illuminate\Support\Facades\Auth::user()->hasRole(['streamer', 'super-admin']))
     <div id="error-reports">
