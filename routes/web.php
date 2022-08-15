@@ -44,6 +44,8 @@ Route::get('/room/removeParticipant', [GameController::class, 'remove_sit'])->mi
 Route::get('/room/addParticipantPusher', [GameController::class, 'print_participant'])->middleware(['auth'])->name('room.pusher.print.join');
 Route::get('/room/getParticipants', [GameController::class, 'count_sit_table'])->middleware(['auth'])->name('room.site.count');
 Route::get('/room/submit_bet', [GameController::class, 'submit_bet'])->middleware(['auth'])->name('room.submit_bet');
+Route::get('/room/get_bet_of', [GameController::class, 'get_bet'])->middleware(['auth'])->name('room.pusher.get.bet');
+Route::get('/room/get_all_bet_game', [GameController::class, 'get_all_bet_for_game'])->middleware(['auth'])->name('room.get.all.bet');
 
 Route::get('/test', [GameController::class, 'test'])->middleware(['auth'])->name('test');
 Route::get('/test/table', [GameController::class, 'table'])->middleware(['auth'])->name('table');

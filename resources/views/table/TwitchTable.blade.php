@@ -443,49 +443,57 @@
         </div>
     </div>
 
-    <div id="div_participant" class="fixed bottom-0 left-0 bg-blackAccent p-5
+        <div class="fixed bottom-0 left-0 bg-blackAccent p-5
                  w-full text-white">
-        <h3 class="font-bold text-xl">Participant(s) : </h3>
-        @foreach($game->participants as $player)
-            <div class="bg-red-700 inline-block p-3 text-white
+            <h3 class="font-bold text-xl">Participant(s) : </h3>
+            <div class="flex">
+                <div id="div_participant" class="flex-1">
+                    @foreach($game->participants as $player)
+                        <div class="bg-red-700 inline-block p-3 text-white
                     rounded-lg" id="{{$player->name}}">
                     <span><a href="#" onclick="removePlayer({{$player->name}})
                             ">✖</a></span>
-                <span class="font-bold">{{$player->name}}</span><br/>
-                @php
-                    $url = "https://wapi.wizebot.tv/api/currency/";
-                    $url .= $game->user->wizebot_key."/get/".$player->name;
-                    $curl = curl_init();
-                    curl_setopt($curl, CURLOPT_URL, $url);
-                    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-                    $output = curl_exec($curl);
-                    curl_close($curl);
-                    $money = number_format(json_decode($output)->currency);
-                    @endphp
-                    {{$money}}💰
+                            <span
+                                class="font-bold">{{$player->name}}</span><br/>
+                            @php
+                                $url = "https://wapi.wizebot.tv/api/currency/";
+                                $url .= $game->user->wizebot_key."/get/".$player->name;
+                                $curl = curl_init();
+                                curl_setopt($curl, CURLOPT_URL, $url);
+                                curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+                                $output = curl_exec($curl);
+                                curl_close($curl);
+                                $money = number_format(json_decode($output)->currency);
+                            @endphp
+                            {{$money}}💰
+                        </div>
+                    @endforeach
                 </div>
-            @endforeach
-    </div>
+                <div id="log_bet">
 
-    <div class="fixed top-0 left-0 bg-casino text-white p-5 drop-shadow-lg">
-        <label>
-            Lien de la table
-            <input type="text" id="sharelink" class="text-black"
-                   value="{{route('room.play.guest', ['idRoom' => $game->id])}}"/>
+                </div>
+            </div>
+        </div>
+
+        <div class="fixed top-0 left-0 bg-casino text-white p-5 drop-shadow-lg">
+            <label>
+                Lien de la table
+                <input type="text" id="sharelink" class="text-black"
+                       value="{{route('room.play.guest', ['idRoom' => $game->id])}}"/>
             </label>
             <div class="tooltip-reverse">
                 <button class="h-full align-middle" id="copyBtn"
                         onclick="myFunction()"
-                    onmouseout="outFunc()">
+                        onmouseout="outFunc()">
                 <span class="tooltiptext"
                       id="myTooltip">Copy to clipboard</span>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8"
-                     viewBox="0 0 20 20"
-                     fill="currentColor">
-                    <path d="M8 2a1 1 0 000 2h2a1 1 0 100-2H8z"/>
-                    <path
-                        d="M3 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v6h-4.586l1.293-1.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L10.414 13H15v3a2 2 0 01-2 2H5a2 2 0 01-2-2V5zM15 11h2a1 1 0 110 2h-2v-2z"/>
-                </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8"
+                         viewBox="0 0 20 20"
+                         fill="currentColor">
+                        <path d="M8 2a1 1 0 000 2h2a1 1 0 100-2H8z"/>
+                        <path
+                            d="M3 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v6h-4.586l1.293-1.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L10.414 13H15v3a2 2 0 01-2 2H5a2 2 0 01-2-2V5zM15 11h2a1 1 0 110 2h-2v-2z"/>
+                    </svg>
             </button>
         </div>
     </div>
@@ -505,6 +513,18 @@
                 }
             }
             xhttp.open("GET", '{{route('auth.wizebot.jeton')}}', true);
+            xhttp.send();
+
+            xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState === 4 && this.status === 200) {
+                    let bets = JSON.parse(this.responseText);
+                    bets.forEach(CheckBets)
+                }
+            }
+            xhttp.open("GET", '{{route('room.get.all.bet',
+                ['game_id' => $game->id])}}',
+                true);
             xhttp.send();
         })
 
@@ -555,13 +575,17 @@
             }
         }
 
-        function placeJetons(elmt) {
+        function placeJetons(elmt, pseudo, amount) {
             let bound = elmt.getBBox();
             let newX = (bound.x + bound.width / 2);
             let newY = (bound.y + bound.height / 2 - 400);
 
             var jeton = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-            jeton.innerHTML = '<path class="fil5" d="M0 0c213,0 387,173 387,387 0,213 -174,386 -387,386 -214,0 -387,-173 -387,-386 0,-214 173,-387 387,-387z"></path>' +
+            jeton.innerHTML = '<title>' + pseudo + " mise " + amount + " jeton" +
+                "(s)"
+                + '</title><path ' + 'class="fil5" ' +
+                'd="M0 0c213,' +
+                '0 387,173 387,387 0,213 -174,386 -387,386 -214,0 -387,-173 -387,-386 0,-214 173,-387 387,-387z"></path>' +
                 '<path class="fil16" d="M0 50c191,0 346,154 346,346 0,191 -155,346 -346,346 -191,0 -346,-155 -346,-346 0,-192 155,-346 346,-346zm0 -23c102,0 194,41 261,108 66,66 108,159 108,261 0,101 -42,194 -108,260 -67,67 -159,108 -261,108 -102,0 -194,-41 -261,-108 -67,-66 -108,-159 -108,-260 0,-102 41,-195 108,-261 67,-67 159,-108 261,-108zm255 114c-66,-66 -156,-106 -255,-106 -100,0 -190,40 -255,106 -65,65 -106,155 -106,255 0,99 41,189 106,254 65,66 155,106 255,106 99,0 189,-40 255,-106 65,-65 105,-155 105,-254 0,-100 -40,-190 -105,-255zm-255 57c54,0 104,22 139,58 36,36 58,85 58,140 0,54 -22,103 -58,139 -35,36 -85,58 -139,58 -55,0 -104,-22 -140,-58 -36,-36 -58,-85 -58,-139 0,-55 22,-104 58,-140 36,-36 85,-58 140,-58zm123 74c-31,-31 -75,-51 -123,-51 -48,0 -92,20 -123,51 -32,32 -52,75 -52,124 0,48 20,91 52,123 31,31 75,51 123,51 48,0 92,-20 123,-51 32,-32 51,-75 51,-123 0,-49 -19,-92 -51,-124zm-52 -196c-4,36 -34,64 -71,64 -37,0 -68,-28 -72,-64 23,-5 47,-8 72,-8 24,0 48,3 71,8zm205 144c-28,22 -69,21 -95,-5 -26,-27 -28,-68 -5,-96 40,26 75,60 100,101zm44 247c-36,-4 -64,-34 -64,-71 0,-37 28,-68 64,-72 5,23 8,47 8,72 0,24 -3,48 -8,71zm-144 205c-23,-28 -21,-69 5,-95 26,-27 67,-28 95,-6 -25,41 -60,75 -100,101zm-176 -21c37,0 67,28 71,64 -23,6 -47,8 -71,8 -25,0 -49,-2 -72,-8 4,-36 35,-64 72,-64zm-181 -74c26,26 28,67 5,95 -40,-26 -75,-60 -101,-101 28,-22 70,-21 96,6zm-75 -181c0,37 -28,67 -64,71 -5,-23 -8,-47 -8,-71 0,-25 3,-49 8,-72 36,4 64,35 64,72zm75 -181c-26,26 -68,27 -96,5 26,-41 61,-75 101,-101 23,28 21,69 -5,96zm181 -43c124,0 224,100 224,224 0,123 -100,224 -224,224 -124,0 -224,-101 -224,-224 0,-124 100,-224 224,-224z"></path>'
             jeton.setAttribute('style', "transform:translate(" + newX + "px, " + newY + "px);")
             jeton.id = 'bet' + elmt.id
@@ -644,6 +668,16 @@
             xhttp.send();
         }
 
+        function CheckBets(bet) {
+            let elmt = document.getElementById(bet.number);
+            let log = document.getElementById('log_bet');
+            let component = document.createElement('p')
+            component.innerText = bet.name + " parie " + bet.amount + " sur le " + bet
+                .number
+            log.append(component);
+            placeJetons(elmt, bet.name, bet.amount)
+        }
+
     </script>
 
         <script>
@@ -689,18 +723,16 @@
             });
 
             channel.bind('bet_added', function (data) {
-                console.log(data);
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function () {
                     if (this.readyState === 4 && this.status === 200) {
-                        playerJeton = this.responseText;
-                        document.getElementById('div_participant')
-                            .innerHTML += playerJeton;
-                        updateNbParticipant();
+                        let bets = JSON.parse(this.responseText);
+                        console.log(bets);
+                        bets.forEach(CheckBets)
                     }
                 }
-                xhttp.open("GET", '{{route('room.pusher.print.join',
-                    array('game_id' => $game->id))}}&pseudo=' + data.pseudo,
+                xhttp.open("GET", '{{route('room.pusher.get.bet',
+                    array('game_id' => $game->id))}}&user_id=' + data.user_id,
                     true);
                 xhttp.send();
             });

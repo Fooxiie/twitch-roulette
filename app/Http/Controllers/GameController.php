@@ -129,6 +129,33 @@ class GameController extends Controller
         return 0;
     }
 
+    public function get_bet(Request $request)
+    {
+        $game_id = $request->query('game_id');
+        $user_id = $request->query('user_id');
+
+        $game = Game::query()->where('id', $game_id)->get()->first();
+        $bets = $game->bets()->where('viewer_id', $user_id)->get();
+
+        foreach ($bets as $bet) {
+            $bet->name = User::query()->where('id', $bet->viewer_id)
+                ->get()->first()->name;
+        }
+
+        return json_encode($bets);
+    }
+
+    public function get_all_bet_for_game(Request $request)
+    {
+        $game_id = $request->query('game_id');
+        $game = Game::query()->where('id', $game_id)->get()->first();
+        foreach ($game->bets as $bet) {
+            $bet->name = User::query()->where('id', $bet->viewer_id)
+                ->get()->first()->name;
+        }
+        return json_encode($game->bets);
+    }
+
     public function test()
     {
         return view('test');
