@@ -77,3 +77,8 @@
     visibility: visible;
     opacity: 1;
 }
+
+.svg_background {
+    background-repeat: repeat space;
+    background-size: 75px 75px;
+}
